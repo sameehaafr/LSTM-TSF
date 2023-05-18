@@ -9,7 +9,8 @@ import tensorflow as tf
 from numpy import array
 import time
 from tensorflow.python.keras import regularizers
-
+import os 
+os.system('sudo pip install scikit-learn')
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
