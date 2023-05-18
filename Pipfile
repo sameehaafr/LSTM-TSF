@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 streamlit = "*"
 scikit-learn = "*"
+keras = "*"
 
 [dev-packages]
 
