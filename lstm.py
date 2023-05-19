@@ -129,7 +129,7 @@ with col2:
 
 #MODEL ----------------------------------------------------------------------------------------------------------------------
 st.header('LSTM Model')
-st.text('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
+st.caption('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
 model = load()
 st.text("Model Summary")
 model.summary(print_fn=lambda x: st.text(x))
