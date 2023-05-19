@@ -9,8 +9,6 @@ import tensorflow as tf
 from numpy import array
 import time
 from tensorflow.python.keras import regularizers
-import os 
-os.system('sudo pip install scikit-learn')
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
@@ -100,7 +98,7 @@ make_prediction(0,10)
 
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
 st.title('LSTM for Time Series Forecasting')
-st.subheader('WIP...')
+st.caption('The Objecttion of this project is to build an LSTM model that can forecast PM10 values in LA, California.')
 st.subheader('Forecasting PM10 in LA, California Over X Amount of Time')
 
 
