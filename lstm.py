@@ -105,6 +105,14 @@ st.caption('The code for this project can be found here: https://github.com/same
 
 #DATA ----------------------------------------------------------------------------------------------------------------------
 st.header('Data')
+st.caption('''To download the exact data I used:
+1. Head to https://www.epa.gov/outdoor-air-quality-data
+2. Click on "Download Daily Data"
+3. Select "PM10" for "Pollutant"
+4. Select "2020" for "Year"
+5. Select "Los Angeles-Long Beach-Anaheim, CA" for "County" -> Make sure all sites are included
+6. Click "Get Data"
+7. Repeat for years 2021 and 2022''')
 col1, col2 = st.columns(2)
 
 with col1:
