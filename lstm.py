@@ -98,7 +98,7 @@ make_prediction(0,10)
 
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
 st.title('LSTM for Time Series Forecasting')
-st.caption('The Objective of this project is to build an LSTM model that can forecast PM10 values in LA, California.')
+st.caption('The objective of this project is to build an LSTM model that can forecast PM10 values in LA, California.')
 st.subheader('Forecasting PM10 in LA, California Over X Amount of Time')
 
 
