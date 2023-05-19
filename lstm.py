@@ -113,10 +113,12 @@ st.caption('''To download the exact data I used:
 5. Select "Los Angeles-Long Beach-Anaheim, CA" for "County" -> Make sure all sites are included
 6. Click "Get Data"
 7. Repeat for years 2021 and 2022''')
+           
+st.caption('We chose PM10 (Particulate Matter with a diameter of 10 micrometers or less) as our primary air quality metric because of its impact and presence. PM10 has a significant impact on human health and especially causing respiratory and cardiovascular issues. PM10 also has various emission sources, including from industrial activities, construction, vehicles, dust, etc. PM10 data is also widely available due to a plethora of air quality monitering stations and government agencies.' )
 col1, col2 = st.columns(2)
 
 with col1:
-   st.text("Full Dataset")
+   st.text("Full Merged Dataset")
    merged_full = merge_data()
    st.dataframe(merged_full, use_container_width=True)
 
