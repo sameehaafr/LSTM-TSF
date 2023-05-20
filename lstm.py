@@ -100,15 +100,15 @@ make_prediction(0,10)
 
 
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
-st.title('LSTM for Time Series Forecasting')
-st.caption('The objective of this project is to build an LSTM model that can forecast PM10 values in LA, California over X amount of time. The data used for this project was obtained from the EPA website.')
-st.caption('This project was worked on during the 2022-23 school year as a part of the club ML@P (Machine Learning at Purdue). Check us out here: https://ml-purdue.github.io/')
-st.caption('The code for this project can be found here: https://github.com/sameehaafr/LSTM-TSF/tree/master')
+st.markdown('# LSTM for Time Series Forecasting')
+st.markdown('The objective of this project is to build an LSTM model that can forecast PM10 values in LA, California over X amount of time. The data used for this project was obtained from the EPA website.')
+st.markdown('This project was worked on during the 2022-23 school year as a part of the club ML@P (Machine Learning at Purdue). Check us out here: https://ml-purdue.github.io/')
+st.markdown('The code for this project can be found here: https://github.com/sameehaafr/LSTM-TSF/tree/master')
 
 
 #DATA ----------------------------------------------------------------------------------------------------------------------
-st.header('Data')
-st.caption('''To download the exact data I used:
+st.header('## Data')
+st.markdown('''To download the exact data I used:
 1. Head to https://www.epa.gov/outdoor-air-quality-data
 2. Click on "Download Daily Data"
 3. Select "PM10" for "Pollutant"
@@ -117,8 +117,8 @@ st.caption('''To download the exact data I used:
 6. Click "Get Data"
 7. Repeat for years 2021 and 2022''')
            
-st.caption('We chose PM10 (Particulate Matter with a diameter of 10 micrometers or less) as our primary air quality metric because of its impact and presence. PM10 has a significant impact on human health and especially causing respiratory and cardiovascular issues. PM10 also has various emission sources, including from industrial activities, construction, vehicles, dust, etc. PM10 data is also widely available due to a plethora of air quality monitering stations and government agencies.' )
-st.caption('Since this model is focused on forecasting PM10 values, I subsetted the data to only include the date and PM10 values. I also normalized the PM10 values to make it easier for the model to train on the data')
+st.markdown('We chose PM10 (Particulate Matter with a diameter of 10 micrometers or less) as our primary air quality metric because of its impact and presence. PM10 has a significant impact on human health and especially causing respiratory and cardiovascular issues. PM10 also has various emission sources, including from industrial activities, construction, vehicles, dust, etc. PM10 data is also widely available due to a plethora of air quality monitering stations and government agencies.' )
+st.markdown('Since this model is focused on forecasting PM10 values, I subsetted the data to only include the date and PM10 values. I also normalized the PM10 values to make it easier for the model to train on the data')
 col1, col2 = st.columns(2)
 
 with col1:
@@ -132,10 +132,10 @@ with col2:
    st.dataframe(merged_sub, use_container_width=True)
 
 #MODEL ----------------------------------------------------------------------------------------------------------------------
-st.markdown('# LSTM Model')
+st.markdown('## LSTM Model')
 st.markdown('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
-st.caption('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
-st.caption('''
+st.markdown('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
+st.markdown('''
 After multiple trials of training, we saw that our model's main problem was it was overfitting the data (trends were too accurate). To prevent overfiting we did the following: 
 1. Reduced the number of training epochs (25): Helps prevent overfitting by limiting the model's exposure to the training data. Stopping the training earlier can improve the model's ability to generalize.
 2. Chose the Exponential Linear Unit (ELU) activation function: ELU can capture both positive and negative input regions (unlike ReLU which sets all negative input to 0) and returns non-zero outputs for negative input. By providing non-zero gradients for both positive and negative values, ELU helps maintain a more balanced and stable gradient flow throughout the network.
@@ -143,7 +143,7 @@ After multiple trials of training, we saw that our model's main problem was it w
 4. Increased Dropout rate (0.6): We increased the drop out rate to reduce the model's reliance on specific inputs/features and encourages generalization.
 ''')
 model = load()
-st.caption("Model Summary")
+st.markdown("## Model Summary")
 model.summary(print_fn=lambda x: st.text(x))
 st.code('''
 def create_lstm(nsteps, nfeatures, units, activation, dropout):
@@ -158,7 +158,7 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 ''')
 
 #PREDICTION ----------------------------------------------------------------------------------------------------------------------
-st.header('Make Predictions')
+st.markdown('## Make Predictions')
 start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
 stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
 combined = make_prediction(start,stop)
