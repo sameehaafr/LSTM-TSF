@@ -8,6 +8,7 @@ streamlit = "*"
 scikit-learn = "*"
 keras = "*"
 tensorflow = "*"
+geopy = "*"
 
 [dev-packages]
 

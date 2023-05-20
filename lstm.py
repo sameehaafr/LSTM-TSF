@@ -9,6 +9,9 @@ import tensorflow as tf
 from numpy import array
 import time
 from tensorflow.python.keras import regularizers
+from geopy.geocoders import Nominatim
+
+
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
@@ -93,6 +96,11 @@ def make_prediction(start, stop):
     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
     return combined
+
+def map():
+    geolocator = Nominatim(user_agent="MyApp")
+    location = geolocator.geocode("Hyderabad")
+    return st.text(location.latitude, location.longitude)
 
 make_prediction(0,10)
 
