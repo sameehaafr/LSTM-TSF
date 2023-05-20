@@ -100,8 +100,11 @@ def map():
     geolocator = Nominatim(user_agent="MyApp")
     merged = merge_data()
     coords = pd.DataFrame()
-    location = geolocator.geocode(merged['Site Name'])
-    return st.text(location.latitude)
+    latitude = []
+    for i in range(len(merged)):
+        location = geolocator.geocode(merged['Site Name'])
+        latitude = latitude.append(location.latitude)
+        st.text(latitude)
 
 make_prediction(0,10)
 
