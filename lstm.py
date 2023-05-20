@@ -185,4 +185,7 @@ st.header('Metrics')
 mse = mean_squared_error(np.array(combined['actual']), np.array(combined['yhat']))
 st.text("mean squared error: " + mse.astype(str))
 
-st.text('Glendora, CA')
+
+geolocator = Nominatim(user_agent="MyApp")
+location = geolocator.geocode('Glendora, CA')
+st.text(location.latitude)
