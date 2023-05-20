@@ -71,6 +71,27 @@ def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
+def plot_learning_curves(history):
+    """
+    Plots the training and validation loss as a function of epochs.
+    
+    Args:
+        history (object): The training history object returned by the model.fit() function.
+    """
+    # Get the training and validation loss from the history object
+    training_loss = history.history['loss']
+    validation_loss = history.history['val_loss']
+    
+    # Plot the learning curves
+    epochs = range(1, len(training_loss) + 1)
+    plt.plot(epochs, training_loss, 'bo-', label='Training Loss')
+    plt.plot(epochs, validation_loss, 'ro-', label='Validation Loss')
+    plt.title('Training and Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.show()
+
 def make_prediction(start, stop):
     start = int(start)
     stop = int(stop)
@@ -133,7 +154,10 @@ st.header('LSTM Model')
 st.caption('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
 st.caption('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
 model = load()
-st.text("Model Summary")
+training_loss = model.history['loss']
+validation_loss = model.history['val_loss']
+st.text(training_loss)
+st.caption("Model Summary")
 model.summary(print_fn=lambda x: st.text(x))
 st.code('''
 def create_lstm(nsteps, nfeatures, units, activation, dropout):
