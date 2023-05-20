@@ -115,6 +115,7 @@ st.caption('''To download the exact data I used:
 7. Repeat for years 2021 and 2022''')
            
 st.caption('We chose PM10 (Particulate Matter with a diameter of 10 micrometers or less) as our primary air quality metric because of its impact and presence. PM10 has a significant impact on human health and especially causing respiratory and cardiovascular issues. PM10 also has various emission sources, including from industrial activities, construction, vehicles, dust, etc. PM10 data is also widely available due to a plethora of air quality monitering stations and government agencies.' )
+st.caption('Since this model is focused on forecasting PM10 values, I subsetted the data to only include the date and PM10 values. I also normalized the PM10 values to make it easier for the model to train on the data')
 col1, col2 = st.columns(2)
 
 with col1:
@@ -130,6 +131,7 @@ with col2:
 #MODEL ----------------------------------------------------------------------------------------------------------------------
 st.header('LSTM Model')
 st.caption('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
+st.caption('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
 model = load()
 st.text("Model Summary")
 model.summary(print_fn=lambda x: st.text(x))
