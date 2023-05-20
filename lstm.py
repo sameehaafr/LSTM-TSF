@@ -71,26 +71,26 @@ def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
-def plot_learning_curves(history):
-    """
-    Plots the training and validation loss as a function of epochs.
+# def plot_learning_curves(history):
+#     """
+#     Plots the training and validation loss as a function of epochs.
     
-    Args:
-        history (object): The training history object returned by the model.fit() function.
-    """
-    # Get the training and validation loss from the history object
-    training_loss = history.history['loss']
-    validation_loss = history.history['val_loss']
+#     Args:
+#         history (object): The training history object returned by the model.fit() function.
+#     """
+#     # Get the training and validation loss from the history object
+#     training_loss = history.history['loss']
+#     validation_loss = history.history['val_loss']
     
-    # Plot the learning curves
-    epochs = range(1, len(training_loss) + 1)
-    plt.plot(epochs, training_loss, 'bo-', label='Training Loss')
-    plt.plot(epochs, validation_loss, 'ro-', label='Validation Loss')
-    plt.title('Training and Validation Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.show()
+#     # Plot the learning curves
+#     epochs = range(1, len(training_loss) + 1)
+#     plt.plot(epochs, training_loss, 'bo-', label='Training Loss')
+#     plt.plot(epochs, validation_loss, 'ro-', label='Validation Loss')
+#     plt.title('Training and Validation Loss')
+#     plt.xlabel('Epochs')
+#     plt.ylabel('Loss')
+#     plt.legend()
+#     plt.show()
 
 def make_prediction(start, stop):
     start = int(start)
