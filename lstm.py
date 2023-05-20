@@ -194,12 +194,14 @@ def map():
     latitude = []
     longitude = []
     for i in merged['Site Name']:
+        st.text(i)
         location = geolocator.geocode(merged['Site Name'][i])
         latitude.append(location.latitude)
         longitude.append(location.longitude)
     combined = pd.DataFrame({'latitude': latitude, 'longitude': longitude}, columns=['latitude', 'longitude'])
-    return st.dataframe(combined, use_container_width=True)
+    return None
 
+map()
 geolocator = Nominatim(user_agent="MyApp")
 location = geolocator.geocode('Azusa, CA')
 st.text(location.latitude)
