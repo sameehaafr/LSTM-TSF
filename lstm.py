@@ -102,7 +102,7 @@ def map():
     coords = pd.DataFrame()
     latitude = []
     for i in range(len(merged)):
-        location = geolocator.geocode(merged['Site Name'])
+        location = geolocator.geocode(merged['Site Name'][i])
         latitude = latitude.append(location.latitude)
         st.text(latitude)
 
