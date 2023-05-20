@@ -101,7 +101,7 @@ def map():
     merged = merge_data()
     coords = pd.DataFrame()
     location = geolocator.geocode(merged['Site Name'])
-    return st.text(location)
+    return st.text(location.latitude)
 
 make_prediction(0,10)
 
