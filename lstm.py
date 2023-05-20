@@ -200,4 +200,6 @@ def map():
     combined = pd.DataFrame({'latitude': latitude, 'longitude': longitude}, columns=['latitude', 'longitude'])
     return st.dataframe(combined, use_container_width=True)
 
-map()
+geolocator = Nominatim(user_agent="MyApp")
+location = geolocator.geocode('Azusa, CA')
+st.text(location.latitude)
