@@ -187,10 +187,18 @@ st.text("mean squared error: " + mse.astype(str))
 
 
 def map():
+    geolocator = Nominatim(user_agent="MyApp")
     merged = merge_data()
     merged['CA'] = [', CA' for i in range(len(merged))]
     merged['Site Name'] = merged['Site Name'] + merged['CA']
-    return st.dataframe(merged['Site Name'])
+    latitude = []
+    longitude = []
+    for i in merged['Site Name']:
+        location = geolocator.geocode(i)
+        latitude.append(location.latitude)
+        longitude.append(location.longitude)
+    combined = pd.DataFrame({'latitude': latitude, 'longitude': longitude}, columns=['latitude', 'longitude'])
+    return st.dataframe(combined, use_container_width=True)
 
 map()
 geolocator = Nominatim(user_agent="MyApp")
