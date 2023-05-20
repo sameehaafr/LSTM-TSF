@@ -47,9 +47,9 @@ def input_seq():
     x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
     return x_train, y_train
 
-def create_lstm(nsteps, nfeatures, units, activation, dropout):
+def create_lstm(units, activation, nsteps, nfeatures, reg_input, dropout):
     model = Sequential()
-    model.add(LSTM(units, activation=activation, input_shape=(nsteps, nfeatures), kernel_regularizer=regularizers.l2(0.02)))
+    model.add(LSTM(units, activation=activation, input_shape=(nsteps, nfeatures), kernel_regularizer=regularizers.l2(reg_input)))
     model.add(Dropout(dropout))
     model.add(Dense(1))
     model.compile(optimizer='adam', loss='mse', run_eagerly=True)
@@ -57,9 +57,10 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
     tf.data.experimental.enable_debug_mode()
     return model
 
-def build_lstm(nsteps, nfeatures, units, activation, dropout, trial):
+#50, 'elu', 10, 1, 0.02, 0.6
+def build_lstm(units, activation, nsteps, nfeatures, reg_input, dropout, trial):
     xtrain, ytrain = input_seq()
-    model = create_lstm(nsteps, nfeatures, units, activation, dropout)
+    model = create_lstm(units, activation, nsteps, nfeatures, reg_input, dropout)
     time1 = time.perf_counter()
     st.text("model training...")
     model.fit(xtrain, ytrain, epochs=25, verbose=0)
@@ -67,6 +68,7 @@ def build_lstm(nsteps, nfeatures, units, activation, dropout, trial):
     st.text("model running time: " + str(time2-time1))
     model.save('models/lstm_model_{}.h5'.format(trial))
     return model
+
 
 def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
@@ -133,6 +135,13 @@ with col2:
 st.header('LSTM Model')
 st.caption('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
 st.caption('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
+st.caption('''
+After multiple trials of training, we saw that our model's main problem was it was overfitting the data (trends were too accurate). To prevent overfiting we did the following: 
+1. Reduced the number of training epochs (25):
+2. Chose the Exponential Linear Unit (ELU) activation function: 
+3. Added L2 regularizer:
+4. Increased Dropout rate (0.6):
+''')
 model = load()
 st.caption("Model Summary")
 model.summary(print_fn=lambda x: st.text(x))
