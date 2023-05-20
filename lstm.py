@@ -137,10 +137,10 @@ st.caption('We chose LSTM as our primary time series forecasting model for vario
 st.caption('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
 st.caption('''
 After multiple trials of training, we saw that our model's main problem was it was overfitting the data (trends were too accurate). To prevent overfiting we did the following: 
-1. Reduced the number of training epochs (25):
-2. Chose the Exponential Linear Unit (ELU) activation function: 
-3. Added L2 regularizer:
-4. Increased Dropout rate (0.6):
+1. Reduced the number of training epochs (25): Helps prevent overfitting by limiting the model's exposure to the training data. Stopping the training earlier can improve the model's ability to generalize.
+2. Chose the Exponential Linear Unit (ELU) activation function: ELU can capture both positive and negative input regions (unlike ReLU which sets all negative input to 0) and returns non-zero outputs for negative input. By providing non-zero gradients for both positive and negative values, ELU helps maintain a more balanced and stable gradient flow throughout the network.
+3. Added L2 regularizer: The L2 regularizer encourages the weights to be small, which reduces the model's complexity and prevents hte model from becoming too specialized to the training data (better generalized performance).
+4. Increased Dropout rate (0.6): We increased the drop out rate to reduce the model's reliance on specific inputs/features and encourages generalization.
 ''')
 model = load()
 st.caption("Model Summary")
