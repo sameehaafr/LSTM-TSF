@@ -66,31 +66,24 @@ def build_lstm(nsteps, nfeatures, units, activation, dropout, trial):
     time2 = time.perf_counter()
     st.text("model running time: " + str(time2-time1))
     model.save('models/lstm_model_{}.h5'.format(trial))
+    return model
 
 def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
-# def plot_learning_curves(history):
-#     """
-#     Plots the training and validation loss as a function of epochs.
-    
-#     Args:
-#         history (object): The training history object returned by the model.fit() function.
-#     """
-#     # Get the training and validation loss from the history object
-#     training_loss = history.history['loss']
-#     validation_loss = history.history['val_loss']
-    
-#     # Plot the learning curves
-#     epochs = range(1, len(training_loss) + 1)
-#     plt.plot(epochs, training_loss, 'bo-', label='Training Loss')
-#     plt.plot(epochs, validation_loss, 'ro-', label='Validation Loss')
-#     plt.title('Training and Validation Loss')
-#     plt.xlabel('Epochs')
-#     plt.ylabel('Loss')
-#     plt.legend()
-#     plt.show()
+def plot_learning_curves(history):
+    model = build_lstm(10, 1, 50, 'elu', 0.2, 0.6, 16)
+    training_loss = model.history['loss']
+    validation_loss = model.history['val_loss']
+
+    epochs = range(1, len(training_loss) + 1)
+    data = pd.DataFrame({'training_loss': training_loss, 'validation_loss': validation_loss, 'epochs': epochs})
+    combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
+    return combined
+
+st.line_chart(plot_learning_curves())
+
 
 def make_prediction(start, stop):
     start = int(start)
