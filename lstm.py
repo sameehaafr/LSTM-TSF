@@ -103,7 +103,7 @@ def map():
     location = geolocator.geocode(merged['Site Name'])
     for i in range(len(merged)):
         location = geolocator.geocode(merged['Site Name'][i])
-        coords = coords.append({'lat': location.latitude, 'lon': location.longitude}, ignore_index=True)
+        coords = coords.concat({'lat': location.latitude, 'lon': location.longitude}, ignore_index=True)
     return st.dataframe(coords)
 
 make_prediction(0,10)
