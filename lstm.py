@@ -186,6 +186,13 @@ mse = mean_squared_error(np.array(combined['actual']), np.array(combined['yhat']
 st.text("mean squared error: " + mse.astype(str))
 
 
+def map():
+    for i in range(len(merged)):
+        merged = merge_data()
+        merged['Site Name'][i] = merged['Site Name'][i]+ ", CA"
+    return st.dataframe(merged['Site Name'])
+
+map()
 geolocator = Nominatim(user_agent="MyApp")
 location = geolocator.geocode('Glendora, CA')
 st.text(location.latitude)
