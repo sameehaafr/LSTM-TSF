@@ -154,9 +154,9 @@ st.header('LSTM Model')
 st.caption('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
 st.caption('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
 model = load()
-training_loss = model.history['loss']
-validation_loss = model.history['val_loss']
-st.text(training_loss)
+# training_loss = model.history['loss']
+# validation_loss = model.history['val_loss']
+st.text(model.history.keys())
 st.caption("Model Summary")
 model.summary(print_fn=lambda x: st.text(x))
 st.code('''
