@@ -189,7 +189,7 @@ st.text("mean squared error: " + mse.astype(str))
 def map():
     geolocator = Nominatim(user_agent="MyApp")
     merged = merge_data()
-    coords = merged[['Site Name', 'Latitude', 'Longitude']]
+    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']]
     st.dataframe(coords, use_container_width=True)
     return None
 
