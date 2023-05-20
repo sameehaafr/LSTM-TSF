@@ -84,7 +84,6 @@ def make_prediction(start, stop):
     model = load()
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
-
     #predict
     yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
     #normalize
@@ -101,7 +100,6 @@ def map():
     geolocator = Nominatim(user_agent="MyApp")
     merged = merge_data()
     coords = pd.DataFrame(columns=['lat', 'lon'])
-    coords = coords.append({'lat': 34.052235, 'lon': -118.243683}, ignore_index=True)
     for i in range(len(merged)):
         location = geolocator.geocode(merged['Site Name'][i])
         coords = coords.append({'lat': location.latitude, 'lon': location.longitude}, ignore_index=True)
