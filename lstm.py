@@ -188,7 +188,7 @@ st.text("mean squared error: " + mse.astype(str))
 
 def map():
     merged = merge_data()
-    coords = merged[['SITE_LATITUDE', 'SITE_LONGITUDE']]
+    coords = merged[['SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
     st.dataframe(coords, use_container_width=True)
     return st.map(coords)
 
