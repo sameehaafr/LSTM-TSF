@@ -187,8 +187,8 @@ st.text("mean squared error: " + mse.astype(str))
 
 
 def map():
+    merged = merge_data()
     for i in range(len(merged)):
-        merged = merge_data()
         merged['Site Name'][i] = merged['Site Name'][i]+ ", CA"
     return st.dataframe(merged['Site Name'])
 
