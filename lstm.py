@@ -99,8 +99,13 @@ def make_prediction(start, stop):
 
 def map():
     geolocator = Nominatim(user_agent="MyApp")
-    location = geolocator.geocode("Azusa, CA")
-    return st.text(location.latitude)
+    merged = merge_data()
+    coords = pd.DataFrame(columns=['lat', 'lon'])
+    coords = coords.append({'lat': 34.052235, 'lon': -118.243683}, ignore_index=True)
+    for i in range(len(merged)):
+        location = geolocator.geocode(merged['Site Name'][i])
+        coords = coords.append({'lat': location.latitude, 'lon': location.longitude}, ignore_index=True)
+    return st.dataframe(coords)
 
 make_prediction(0,10)
 
