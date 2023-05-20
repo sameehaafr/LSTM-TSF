@@ -100,7 +100,7 @@ def make_prediction(start, stop):
 def map():
     geolocator = Nominatim(user_agent="MyApp")
     location = geolocator.geocode("Azusa, CA")
-    return st.text("Latitude: " + location.latitude)
+    return st.text(location.latitude)
 
 make_prediction(0,10)
 
