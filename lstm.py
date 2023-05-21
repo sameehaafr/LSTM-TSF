@@ -10,6 +10,7 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 from geopy.geocoders import Nominatim
+import geodatasets
 
 
 
@@ -96,10 +97,9 @@ def make_prediction(start, stop):
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
     return combined
 
-def map():
+def map_df():
     geolocator = Nominatim(user_agent="MyApp")
     merged = merge_data()
-    coords = pd.DataFrame()
     latitude = []
     for i in range(len(merged)):
         merged['Site Name'][i] = merged['Site Name'][i] + ", CA"
@@ -107,6 +107,7 @@ def map():
         location = geolocator.geocode(merged['Site Name'][i])
         latitude = latitude.append(location.latitude)
         st.text(latitude)
+    return st.dataframe(merged, use_container_width=True)
 
 def map():
     merged = merge_data()
@@ -193,4 +194,5 @@ st.text("mean squared error: " + mse.astype(str))
 
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Map of the Air Quality Monitering Stations in LA')
+map_df()
 map()
