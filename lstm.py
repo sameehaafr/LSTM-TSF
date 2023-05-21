@@ -102,6 +102,13 @@ def map():
     st.dataframe(coords, use_container_width=True)
     return st.map(coords[['LAT', 'LON']])
 
+def density_map():
+    merged = merge_data()
+    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
+    fig = coords.plot()
+    return st.plotly_chart(fig)
+
+
 make_prediction(0,10)
 
 
@@ -182,3 +189,4 @@ st.text("mean squared error: " + mse.astype(str))
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Map of the Air Quality Monitering Stations in LA')
 map()
+density_map()
