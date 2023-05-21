@@ -96,12 +96,6 @@ def make_prediction(start, stop):
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
     return combined
 
-def map_df():
-    merged = merge_data()
-    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
-    st.dataframe(coords, use_container_width=True)
-    return st.dataframe(coords, use_container_width=True)
-
 def map():
     merged = merge_data()
     coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
@@ -187,5 +181,4 @@ st.text("mean squared error: " + mse.astype(str))
 
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Map of the Air Quality Monitering Stations in LA')
-map_df()
 map()
