@@ -10,7 +10,6 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 from geopy.geocoders import Nominatim
-import geodatasets
 
 
 
