@@ -97,16 +97,10 @@ def make_prediction(start, stop):
     return combined
 
 def map_df():
-    geolocator = Nominatim(user_agent="MyApp")
     merged = merge_data()
-    latitude = []
-    for i in range(len(merged)):
-        merged['Site Name'][i] = merged['Site Name'][i] + ", CA"
-    for i in range(len(merged)):
-        location = geolocator.geocode(merged['Site Name'][i])
-        latitude = latitude.append(location.latitude)
-        st.text(latitude)
-    return st.dataframe(merged, use_container_width=True)
+    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
+    st.dataframe(coords, use_container_width=True)
+    return st.dataframe(coords, use_container_width=True)
 
 def map():
     merged = merge_data()
