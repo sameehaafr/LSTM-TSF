@@ -9,7 +9,8 @@ import tensorflow as tf
 from numpy import array
 import time
 from tensorflow.python.keras import regularizers
-from geopy.geocoders import Nominatim
+import matplotlib.pyplot as plt
+import plotly.express as px
 
 
 
@@ -108,6 +109,11 @@ def density_map():
     fig = coords.plot()
     return st.plotly_chart(fig)
 
+def time_lapse():
+    fig = px.choropleth(locations=["CA"], locationmode="USA-states", color=[1], scope="usa")
+    fig.show()
+    return st.plotly_chart(fig)
+
 
 make_prediction(0,10)
 
@@ -189,4 +195,4 @@ st.text("mean squared error: " + mse.astype(str))
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Map of the Air Quality Monitering Stations in LA')
 map()
-density_map()
+time_lapse()
