@@ -111,21 +111,45 @@ def density_map():
 def choropleth():
     merged = merge_data()
     coords = merged[['Site Name', 'Daily Mean PM10 Concentration', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
-    fig = go.Figure(data=go.Choropleth(
-        locations=coords['Site Name'],  # Zip codes in Los Angeles
-        z=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each zip code
-        locationmode='USA-states',  # Use the USA zip code format
-        colorscale='YlOrRd',  # Choose a colorscale
-        colorbar_title='Pollution Density',  # Title for the colorbar
-        ))
-    # Set the title and layout
+    # fig = go.Figure(data=go.Choropleth(
+    #     locations=coords['Site Name'],  # Zip codes in Los Angeles
+    #     z=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each zip code
+    #     locationmode='USA-states',  # Use the USA zip code format
+    #     colorscale='YlOrRd',  # Choose a colorscale
+    #     colorbar_title='Pollution Density',  # Title for the colorbar
+    #     ))
+    # # Set the title and layout
+    # fig.update_layout(
+    #     title_text='Air Pollution Density in Los Angeles',
+    #     geo_scope='usa',  # Set the scope to the United States
+    # )
+    # # Show the plot
+    # fig.show()
+
+    # Create a scatter map
+    fig = go.Figure(data=go.Scattermapbox(
+        lat=coords['LAT'],  # Latitude coordinates
+        lon=coords['LON'],  # Longitude coordinates
+        mode='markers',
+        marker=dict(
+            size=10,
+            color=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each point
+            colorscale='YlOrRd',  # Choose a colorscale
+            colorbar=dict(title='Pollution Density'),  # Title for the colorbar
+        ),
+    ))
+    
+    # Set the map layout
     fig.update_layout(
         title_text='Air Pollution Density in Los Angeles',
-        geo_scope='usa',  # Set the scope to the United States
+        mapbox=dict(
+            center=dict(lat=34.0522, lon=-118.2437),  # Center the map on Los Angeles coordinates
+            zoom=10,  # Adjust the zoom level as needed
+        ),
     )
+
     # Show the plot
     fig.show()
-
     return st.plotly_chart(fig)
 
 
