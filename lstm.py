@@ -96,73 +96,51 @@ def make_prediction(start, stop):
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
     return combined
 
-def map():
+def site_points():
     merged = merge_data()
     coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
     st.dataframe(coords, use_container_width=True)
     return st.map(coords[['LAT', 'LON']])
 
-def density_map():
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def fetch_pm10_data(city):
+    # Assuming you have a dataset or API to fetch the PM10 data for each city over time
     merged = merge_data()
-    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
-    fig = coords.plot()
-    return st.plotly_chart(fig)
+    merged[DATE] = pd.to_datetime(merged[DATE])
+    # Fetch the data for each city
+    city_data = merged[merged['Site Name'] == city]
+    return city_data[DATA_COL]
 
-def choropleth():
-    merged = merge_data()
-    merged = merged[['Site Name', 'Daily Mean PM10 Concentration', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
-    # Define the list of cities in Los Angeles County
-    cities = merged['Site Name'].unique().tolist()
+merged = merge_data()
+cities = merged['Site Name'].unique().tolist()
+def plot_pm10_over_time(cities):
+    # Assuming you have a dataset or API to fetch the PM10 data for each city over time
 
-    # Create an empty list to store the county information
-    counties = []
-
-    # Initialize the geocoder
-    geolocator = Nominatim(user_agent='my-application')
-
-    # Retrieve the county information for each city
+    # Fetch the data for each city
+    city_data = {}
     for city in cities:
-        try:
-            location = geolocator.geocode(city + ', Los Angeles County, California')
-            if location:
-                county = location.raw['address'].get('county')
-                counties.append(county)
-        except GeocoderTimedOut:
-            continue
+        # Retrieve the PM10 data for each city
+        pm10_data = fetch_pm10_data(city)  # Replace with your data retrieval method
+        city_data[city] = pm10_data
 
-    # Create a scatter map
-    fig = go.Figure(data=go.Scattergeo(
-        locations=cities,  # Cities in Los Angeles County
-        locationmode='USA-states',
-        mode='markers',
-        marker=dict(
-            size=10,
-            color=counties,  # Assign colors based on the counties
-            colorscale='YlOrRd',
-            colorbar=dict(title='County'),
-        ),
-    ))
+    # Plotting
+    fig = plt.figure(figsize=(12, 6))
 
-    # Set the map layout
-    fig.update_layout(
-        title_text='Cities in Los Angeles County',
-        geo=dict(
-            scope='usa',
-            resolution=50,
-            showland=True,
-            landcolor='rgb(217, 217, 217)',
-            countrycolor='rgb(255, 255, 255)',
-            coastlinecolor='rgb(255, 255, 255)',
-            projection_type='albers usa',
-        ),
-    )
+    for city, data in city_data.items():
+        plt.plot(data.index, data.values, label=city)
 
-    # Show the plot
-    fig.show()
-    return st.plotly_chart(fig)
+    plt.xlabel('Time')
+    plt.ylabel('PM10')
+    plt.title('PM10 Values over Time in LA County')
+    plt.legend()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+    return st.pyplot(fig)
 
-
-make_prediction(0,10)
+plot_pm10_over_time(cities)
 
 
 
@@ -241,5 +219,4 @@ st.text("mean squared error: " + mse.astype(str))
 
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Map of the Air Quality Monitering Stations in LA')
-map()
-choropleth()
+site_points()
