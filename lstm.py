@@ -110,7 +110,7 @@ def density_map():
     return st.plotly_chart(fig)
 
 def time_lapse():
-    fig = px.choropleth(locations=["CA"], locationmode="USA-states", color=[1], scope="usa")
+    fig = px.choropleth(locations=["CA"], locationmode="ISO-3", color=[1], scope="usa")
     fig.show()
     return st.plotly_chart(fig)
 
