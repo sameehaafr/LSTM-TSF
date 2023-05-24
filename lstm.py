@@ -11,7 +11,7 @@ import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-
+from geopy.geocoders import Nominatim
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
@@ -110,40 +110,47 @@ def density_map():
 
 def choropleth():
     merged = merge_data()
-    coords = merged[['Site Name', 'Daily Mean PM10 Concentration', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
-    # fig = go.Figure(data=go.Choropleth(
-    #     locations=coords['Site Name'],  # Zip codes in Los Angeles
-    #     z=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each zip code
-    #     locationmode='USA-states',  # Use the USA zip code format
-    #     colorscale='YlOrRd',  # Choose a colorscale
-    #     colorbar_title='Pollution Density',  # Title for the colorbar
-    #     ))
-    # # Set the title and layout
-    # fig.update_layout(
-    #     title_text='Air Pollution Density in Los Angeles',
-    #     geo_scope='usa',  # Set the scope to the United States
-    # )
-    # # Show the plot
-    # fig.show()
+    merged = merged[['Site Name', 'Daily Mean PM10 Concentration', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
+    # Define the list of cities in Los Angeles County
+    cities = merged['Site Name'].unique().tolist()
+
+    # Create an empty list to store the county information
+    counties = []
+
+    # Initialize the geocoder
+    geolocator = Nominatim(user_agent='my-application')
+
+    # Retrieve the county information for each city
+    for city in cities:
+        location = geolocator.geocode(city + ', Los Angeles County, California')
+        if location:
+            county = location.raw['address'].get('county')
+            counties.append(county)
 
     # Create a scatter map
-    
-    # Create a choropleth map
-    fig = go.Figure(data=go.Choroplethmapbox(
-        geojson='california_cities.geojson',  # Replace 'california_cities.geojson' with the actual file containing city boundaries
-        locations=coords['Site Name'],  # City names in California
-        z=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each city
-        colorscale='YlOrRd',  # Choose a colorscale
-        marker_opacity=0.7,  # Set the opacity of the city markers
-        colorbar=dict(title='Pollution Density'),  # Title for the colorbar
+    fig = go.Figure(data=go.Scattergeo(
+        locations=cities,  # Cities in Los Angeles County
+        locationmode='USA-states',
+        mode='markers',
+        marker=dict(
+            size=10,
+            color=counties,  # Assign colors based on the counties
+            colorscale='YlOrRd',
+            colorbar=dict(title='County'),
+        ),
     ))
 
     # Set the map layout
     fig.update_layout(
-        title_text='Air Pollution Density in California Cities',
-        mapbox=dict(
-            center=dict(lat=36.7783, lon=-119.4179),  # Center the map on California coordinates
-            zoom=5,  # Adjust the zoom level as needed
+        title_text='Cities in Los Angeles County',
+        geo=dict(
+            scope='usa',
+            resolution=50,
+            showland=True,
+            landcolor='rgb(217, 217, 217)',
+            countrycolor='rgb(255, 255, 255)',
+            coastlinecolor='rgb(255, 255, 255)',
+            projection_type='albers usa',
         ),
     )
 
