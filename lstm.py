@@ -127,24 +127,23 @@ def choropleth():
     # fig.show()
 
     # Create a scatter map
-    fig = go.Figure(data=go.Scattermapbox(
-        lat=coords['LAT'],  # Latitude coordinates
-        lon=coords['LON'],  # Longitude coordinates
-        mode='markers',
-        marker=dict(
-            size=10,
-            color=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each point
-            colorscale='YlOrRd',  # Choose a colorscale
-            colorbar=dict(title='Pollution Density'),  # Title for the colorbar
-        ),
-    ))
     
+    # Create a choropleth map
+    fig = go.Figure(data=go.Choroplethmapbox(
+        geojson='california_cities.geojson',  # Replace 'california_cities.geojson' with the actual file containing city boundaries
+        locations=coords['Site Name'],  # City names in California
+        z=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each city
+        colorscale='YlOrRd',  # Choose a colorscale
+        marker_opacity=0.7,  # Set the opacity of the city markers
+        colorbar=dict(title='Pollution Density'),  # Title for the colorbar
+    ))
+
     # Set the map layout
     fig.update_layout(
-        title_text='Air Pollution Density in Los Angeles',
+        title_text='Air Pollution Density in California Cities',
         mapbox=dict(
-            center=dict(lat=34.0522, lon=-118.2437),  # Center the map on Los Angeles coordinates
-            zoom=10,  # Adjust the zoom level as needed
+            center=dict(lat=36.7783, lon=-119.4179),  # Center the map on California coordinates
+            zoom=5,  # Adjust the zoom level as needed
         ),
     )
 
