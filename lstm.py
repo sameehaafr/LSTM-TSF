@@ -110,23 +110,23 @@ def density_map():
 
 def choropleth():
     merged = merge_data()
-    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
-    # fig = go.Figure(data=go.Choropleth(
-    #     locations=coords['Site Name'],  # Zip codes in Los Angeles
-    #     z=coords['pollution_density'],  # Pollution density values for each zip code
-    #     locationmode='USA-zip',  # Use the USA zip code format
-    #     colorscale='YlOrRd',  # Choose a colorscale
-    #     colorbar_title='Pollution Density',  # Title for the colorbar
-    #     ))
-    # # Set the title and layout
-    # fig.update_layout(
-    #     title_text='Air Pollution Density in Los Angeles',
-    #     geo_scope='usa',  # Set the scope to the United States
-    # )
-    # # Show the plot
-    # fig.show()
+    coords = merged[['Site Name', 'Daily Mean PM10 Concentration', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
+    fig = go.Figure(data=go.Choropleth(
+        locations=coords['Site Name'],  # Zip codes in Los Angeles
+        z=coords['Daily Mean PM10 Concentration'],  # Pollution density values for each zip code
+        locationmode='USA-states',  # Use the USA zip code format
+        colorscale='YlOrRd',  # Choose a colorscale
+        colorbar_title='Pollution Density',  # Title for the colorbar
+        ))
+    # Set the title and layout
+    fig.update_layout(
+        title_text='Air Pollution Density in Los Angeles',
+        geo_scope='usa',  # Set the scope to the United States
+    )
+    # Show the plot
+    fig.show()
 
-    return st.dataframe(coords, use_container_width=True)
+    return st.plotly_chart(fig)
 
 
 make_prediction(0,10)
