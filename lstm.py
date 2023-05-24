@@ -122,10 +122,13 @@ def choropleth():
 
     # Retrieve the county information for each city
     for city in cities:
-        location = geolocator.geocode(city + ', Los Angeles County, California')
-        if location:
-            county = location.raw['address'].get('county')
-            counties.append(county)
+        try:
+            location = geolocator.geocode(city + ', Los Angeles County, California')
+            if location:
+                county = location.raw['address'].get('county')
+                counties.append(county)
+        except GeocoderTimedOut:
+            continue
 
     # Create a scatter map
     fig = go.Figure(data=go.Scattergeo(
