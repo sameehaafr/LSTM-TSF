@@ -10,8 +10,7 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
-import plotly.express as px
-
+import plotly.graph_objects as go
 
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
@@ -109,10 +108,25 @@ def density_map():
     fig = coords.plot()
     return st.plotly_chart(fig)
 
-def time_lapse():
-    fig = px.choropleth(locations=["CA"], locationmode="ISO-3", color=[1], scope="usa")
-    fig.show()
-    return st.plotly_chart(fig)
+def choropleth():
+    merged = merge_data()
+    coords = merged[['Site Name', 'SITE_LATITUDE', 'SITE_LONGITUDE']].rename(columns={'SITE_LATITUDE': 'LAT', 'SITE_LONGITUDE': 'LON'})
+    # fig = go.Figure(data=go.Choropleth(
+    #     locations=coords['Site Name'],  # Zip codes in Los Angeles
+    #     z=coords['pollution_density'],  # Pollution density values for each zip code
+    #     locationmode='USA-zip',  # Use the USA zip code format
+    #     colorscale='YlOrRd',  # Choose a colorscale
+    #     colorbar_title='Pollution Density',  # Title for the colorbar
+    #     ))
+    # # Set the title and layout
+    # fig.update_layout(
+    #     title_text='Air Pollution Density in Los Angeles',
+    #     geo_scope='usa',  # Set the scope to the United States
+    # )
+    # # Show the plot
+    # fig.show()
+
+    return st.dataframe(coords, use_container_width=True)
 
 
 make_prediction(0,10)
@@ -195,4 +209,4 @@ st.text("mean squared error: " + mse.astype(str))
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Map of the Air Quality Monitering Stations in LA')
 map()
-time_lapse()
+choropleth()
