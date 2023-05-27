@@ -44,7 +44,7 @@ def input_seq():
     merged = merge_data()
     daily_pm10 = merged[DATA_COL].values.tolist()
     daily_pm10 = daily_pm10[0:len(daily_pm10)-1]
-    x_train, y_train = split_data(daily_pm10, 10)
+    x_train, y_train = split_data(daily_pm10, 30)
     x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
     return x_train, y_train
 
@@ -59,7 +59,7 @@ def create_lstm(units, activation, nsteps, nfeatures, reg_input, dropout):
     return model
 
 #50, 'elu', 10, 1, 0.02, 0.6
-def build_lstm(units, activation, nsteps, nfeatures, reg_input, dropout, trial):
+def build_lstm(units, activation, nsteps, nfeatures, reg_input, dropout):
     xtrain, ytrain = input_seq()
     model = create_lstm(units, activation, nsteps, nfeatures, reg_input, dropout)
     time1 = time.perf_counter()
@@ -67,12 +67,14 @@ def build_lstm(units, activation, nsteps, nfeatures, reg_input, dropout, trial):
     model.fit(xtrain, ytrain, epochs=25, verbose=0)
     time2 = time.perf_counter()
     st.text("model running time: " + str(time2-time1))
-    model.save('models/lstm_model_{}.h5'.format(trial))
+    model.save('models/lstm_model_11.h5')
     return model
+
+build_lstm(50, 'elu', 40, 1, 0.03, 0.6)
 
 
 def load():
-    model = tf.keras.models.load_model('models/lstm_model_10.h5')
+    model = tf.keras.models.load_model('models/lstm_model_11.h5')
     return model
 
 def make_prediction(start, stop):
