@@ -140,9 +140,6 @@ def plot_density_map():
 
     st.plotly_chart(fig)
 
-# Call the method in your Streamlit app
-plot_density_map()
-
 
 # Call the method in your Streamlit app
 plot_density_map()
