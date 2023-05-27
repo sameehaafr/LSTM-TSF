@@ -10,10 +10,8 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
-import plotly.graph_objects as go
-from geopy.geocoders import Nominatim
 
-DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
+DATA_URLS = ["data/CA_pm10_2020.csv", "data/CA_pm10_2021.csv", "data/CA_pm10_2022.csv"]
 DATE = "Date"
 DATA_COL = "Daily Mean PM10 Concentration"
 
@@ -112,80 +110,6 @@ def fetch_pm10_data(city):
     # Fetch the data for each city
     city_data = merged[merged['Site Name'] == city]
     return city_data[DATA_COL]
-
-import plotly.graph_objects as go
-
-import plotly.graph_objects as go
-
-import plotly.graph_objects as go
-from geopy.geocoders import Nominatim
-
-def plot_density_map():
-    merged = merge_data()
-    cities = merged['Site Name'].unique()
-    la_county_cities = [city for city in cities if 'Los Angeles' in city]  # Filter only LA County cities
-
-    geolocator = Nominatim(user_agent="geoapiExercises")
-
-    latitudes = []
-    longitudes = []
-    densities = []
-
-    for city in la_county_cities:
-        location = geolocator.geocode(city + ", Los Angeles, California")
-        if location is not None:
-            latitudes.append(location.latitude)
-            longitudes.append(location.longitude)
-            city_data = fetch_pm10_data(city)
-            densities.append(city_data.mean())
-
-    fig = go.Figure(data=go.Scattergeo(
-        lon=longitudes,
-        lat=latitudes,
-        mode='markers',
-        marker=dict(
-            size=densities,
-            color=densities,
-            colorscale='Reds',
-            colorbar=dict(title='PM10 Density')
-        )
-    ))
-
-    fig.update_layout(
-        title_text='PM10 Density in LA County Cities',
-        geo=dict(
-            scope='usa',
-            projection_type='albers usa',
-            showland=True,
-            landcolor='rgb(217, 217, 217)',
-            subunitcolor='rgb(255, 255, 255)',
-            countrycolor='rgb(255, 255, 255)',
-            showlakes=True,
-            lakecolor='rgb(255, 255, 255)',
-            showsubunits=True,
-            showcountries=True,
-            resolution=110,
-            lonaxis=dict(
-                range=[-119, -117],
-                dtick=0.5
-            ),
-            lataxis=dict(
-                range=[33.5, 34.5],
-                dtick=0.5
-            )
-        )
-    )
-
-    st.plotly_chart(fig)
-
-# Call the method in your Streamlit app
-plot_density_map()
-
-
-
-# Call the method in your Streamlit app
-plot_density_map()
-
 
 
 
