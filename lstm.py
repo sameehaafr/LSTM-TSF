@@ -117,28 +117,70 @@ import plotly.graph_objects as go
 
 import plotly.graph_objects as go
 
+import plotly.graph_objects as go
+from geopy.geocoders import Nominatim
+
 def plot_density_map():
     merged = merge_data()
     cities = merged['Site Name'].unique()
     la_county_cities = [city for city in cities if 'Los Angeles' in city]  # Filter only LA County cities
-    fig = go.Figure()
+
+    geolocator = Nominatim(user_agent="geoapiExercises")
+
+    latitudes = []
+    longitudes = []
+    densities = []
 
     for city in la_county_cities:
-        city_data = fetch_pm10_data(city)
-        fig.add_trace(go.Choropleth(
-            locations=[city],
-            z=city_data,
-            locationmode='USA-states',
+        location = geolocator.geocode(city + ", Los Angeles, California")
+        if location is not None:
+            latitudes.append(location.latitude)
+            longitudes.append(location.longitude)
+            city_data = fetch_pm10_data(city)
+            densities.append(city_data.mean())
+
+    fig = go.Figure(data=go.Scattergeo(
+        lon=longitudes,
+        lat=latitudes,
+        mode='markers',
+        marker=dict(
+            size=densities,
+            color=densities,
             colorscale='Reds',
             colorbar=dict(title='PM10 Density')
-        ))
+        )
+    ))
 
     fig.update_layout(
         title_text='PM10 Density in LA County Cities',
-        geo_scope='usa'
+        geo=dict(
+            scope='usa',
+            projection_type='albers usa',
+            showland=True,
+            landcolor='rgb(217, 217, 217)',
+            subunitcolor='rgb(255, 255, 255)',
+            countrycolor='rgb(255, 255, 255)',
+            showlakes=True,
+            lakecolor='rgb(255, 255, 255)',
+            showsubunits=True,
+            showcountries=True,
+            resolution=110,
+            lonaxis=dict(
+                range=[-119, -117],
+                dtick=0.5
+            ),
+            lataxis=dict(
+                range=[33.5, 34.5],
+                dtick=0.5
+            )
+        )
     )
 
     st.plotly_chart(fig)
+
+# Call the method in your Streamlit app
+plot_density_map()
+
 
 
 # Call the method in your Streamlit app
