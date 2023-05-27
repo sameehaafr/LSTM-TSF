@@ -44,7 +44,7 @@ def input_seq():
     merged = merge_data()
     daily_pm10 = merged[DATA_COL].values.tolist()
     daily_pm10 = daily_pm10[0:len(daily_pm10)-1]
-    x_train, y_train = split_data(daily_pm10, 30)
+    x_train, y_train = split_data(daily_pm10, 10)
     x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
     return x_train, y_train
 
