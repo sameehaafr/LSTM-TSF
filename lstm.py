@@ -113,34 +113,32 @@ def fetch_pm10_data(city):
     city_data = merged[merged['Site Name'] == city]
     return city_data[DATA_COL]
 
-merged = merge_data()
-cities = merged['Site Name'].unique().tolist()
-def plot_pm10_over_time(cities):
-    # Assuming you have a dataset or API to fetch the PM10 data for each city over time
+import plotly.graph_objects as go
 
-    # Fetch the data for each city
-    city_data = {}
+def plot_density_map():
+    merged = merge_data()
+    cities = merged['Site Name'].unique()
+    fig = go.Figure()
+
     for city in cities:
-        # Retrieve the PM10 data for each city
-        pm10_data = fetch_pm10_data(city)  # Replace with your data retrieval method
-        city_data[city] = pm10_data
+        city_data = fetch_pm10_data(city)
+        fig.add_trace(go.Choropleth(
+            locations=[city],
+            z=city_data,
+            locationmode='USA-states',
+            colorscale='Reds',
+            colorbar=dict(title='PM10 Density')
+        ))
 
-    # Plotting
-    fig = plt.figure(figsize=(12, 6))
+    fig.update_layout(
+        title_text='PM10 Density in LA Cities',
+        geo_scope='usa'
+    )
 
-    for city, data in city_data.items():
-        plt.plot(data.index, data.values, label=city)
+    st.plotly_chart(fig)
 
-    plt.xlabel('Time')
-    plt.ylabel('PM10')
-    plt.title('PM10 Values over Time in LA County')
-    plt.legend()
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
-    return st.pyplot(fig)
-
-plot_pm10_over_time(cities)
+# Call the method in your Streamlit app
+plot_density_map()
 
 
 
