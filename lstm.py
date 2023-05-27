@@ -71,7 +71,7 @@ def build_lstm(units, activation, nsteps, nfeatures, reg_input, dropout):
     return model
 
 def load():
-    model = tf.keras.models.load_model('models/lstm_model_11.h5')
+    model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
 def make_prediction(start, stop):
