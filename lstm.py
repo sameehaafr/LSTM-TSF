@@ -11,7 +11,7 @@ import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
 
-DATA_URLS = ["data/CA_pm10_2020.csv", "data/CA_pm10_2021.csv", "data/CA_pm10_2022.csv"]
+DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
 DATA_COL = "Daily Mean PM10 Concentration"
 
