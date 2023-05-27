@@ -115,12 +115,15 @@ def fetch_pm10_data(city):
 
 import plotly.graph_objects as go
 
+import plotly.graph_objects as go
+
 def plot_density_map():
     merged = merge_data()
     cities = merged['Site Name'].unique()
+    la_county_cities = [city for city in cities if 'Los Angeles' in city]  # Filter only LA County cities
     fig = go.Figure()
 
-    for city in cities:
+    for city in la_county_cities:
         city_data = fetch_pm10_data(city)
         fig.add_trace(go.Choropleth(
             locations=[city],
@@ -131,11 +134,15 @@ def plot_density_map():
         ))
 
     fig.update_layout(
-        title_text='PM10 Density in LA Cities',
-        geo_scope='usa-counties'
+        title_text='PM10 Density in LA County Cities',
+        geo_scope='usa'
     )
 
     st.plotly_chart(fig)
+
+# Call the method in your Streamlit app
+plot_density_map()
+
 
 # Call the method in your Streamlit app
 plot_density_map()
