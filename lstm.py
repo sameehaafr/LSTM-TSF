@@ -132,7 +132,7 @@ def plot_density_map():
 
     fig.update_layout(
         title_text='PM10 Density in LA Cities',
-        geo_scope='usa'
+        geo_scope='usa-counties'
     )
 
     st.plotly_chart(fig)
