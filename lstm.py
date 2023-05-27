@@ -70,9 +70,6 @@ def build_lstm(units, activation, nsteps, nfeatures, reg_input, dropout):
     model.save('models/lstm_model_11.h5')
     return model
 
-build_lstm(50, 'elu', 40, 1, 0.03, 0.6)
-
-
 def load():
     model = tf.keras.models.load_model('models/lstm_model_11.h5')
     return model
