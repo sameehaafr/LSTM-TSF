@@ -10,6 +10,8 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
+from streamlit_tensorboard import st_tensorboard
+
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
@@ -109,6 +111,11 @@ def fetch_pm10_data(city):
     # Fetch the data for each city
     city_data = merged[merged['Site Name'] == city]
     return city_data[DATA_COL]
+
+# def tens_board():
+#     logdir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+#     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, histogram_freq=1)
+#     return st_tensorboard(logdir=logdir, port=6006, width=1080)
 
 
 
