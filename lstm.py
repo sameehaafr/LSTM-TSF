@@ -10,7 +10,6 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
-from streamlit_tensorboard import st_tensorboard
 
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
