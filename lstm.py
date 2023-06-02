@@ -100,24 +100,6 @@ def site_points():
     st.dataframe(coords, use_container_width=True)
     return st.map(coords[['LAT', 'LON']])
 
-import pandas as pd
-import matplotlib.pyplot as plt
-
-def fetch_pm10_data(city):
-    # Assuming you have a dataset or API to fetch the PM10 data for each city over time
-    merged = merge_data()
-    merged[DATE] = pd.to_datetime(merged[DATE])
-    # Fetch the data for each city
-    city_data = merged[merged['Site Name'] == city]
-    return city_data[DATA_COL]
-
-# def tens_board():
-#     logdir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-#     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir, histogram_freq=1)
-#     return st_tensorboard(logdir=logdir, port=6006, width=1080)
-
-
-
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
 st.markdown('# LSTM for Time Series Forecasting')
 st.caption('The objective of this project is to build an LSTM model that can forecast PM10 values in LA, California over X amount of time. The data used for this project was obtained from the EPA website.')
@@ -177,6 +159,7 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 
 #PREDICTION ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Make Predictions')
+st.text('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
 stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
 combined = make_prediction(start,stop)
