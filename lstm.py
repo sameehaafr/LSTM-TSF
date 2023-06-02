@@ -159,7 +159,7 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 
 #PREDICTION ----------------------------------------------------------------------------------------------------------------------
 st.markdown('## Make Predictions')
-st.text('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
+st.caption('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
 stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
 combined = make_prediction(start,stop)
