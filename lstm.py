@@ -78,7 +78,6 @@ def load():
 def make_prediction(start, stop):
     start = int(start)
     stop = int(stop)
-    print(start)
     model = load()
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
