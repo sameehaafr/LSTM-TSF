@@ -101,44 +101,21 @@ def site_points():
     return st.map(coords[['LAT', 'LON']])
 
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
-# # Create a sidebar
-# st.sidebar.title("About Me")
-# st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
+# Create a sidebar
+st.sidebar.title("About Me")
+st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
 
-# def open_link(url):
-#     st.markdown(f'<a href="{url}" target="_blank">Open Link</a>', unsafe_allow_html=True)
+def open_link(url):
+    st.markdown(f'<a href="{url}" target="_blank">Open Link</a>', unsafe_allow_html=True)
 
-# if st.sidebar.button("My Website"):
-#     open_link("https://sameehaafr.github.io/sameehaafr/")
-# if st.sidebar.button("GitHub"):
-#     open_link("https://github.com/sameehaafr")
-# if st.sidebar.button("LinkedIn"):
-#     open_link("https://www.linkedin.com/in/sameeha-afrulbasha/")
-# if st.sidebar.button("Medium"):
-#     open_link("https://sameehaafr.medium.com/")
-# Define your personal links
-links = {
-    'GitHub': 'https://github.com/your_username',
-    'LinkedIn': 'https://www.linkedin.com/in/your_profile',
-    'Website': 'https://yourwebsite.com'
-}
-
-# Create the sidebar
-st.sidebar.title("Personal Links")
-
-# Add buttons for each link
-for link_name, link_url in links.items():
-    st.sidebar.button(link_name, key=link_name, help=link_url)
-
-# Handle button clicks
-if st.sidebar.button('Clear'):
-    st.experimental_rerun()  # Clear the button state
-
-# Handle link button clicks
-for link_name, link_url in links.items():
-    if st.sidebar.button(link_name, key=link_name):
-        st.sidebar.markdown(f'Opening [{link_name}]({link_url})')
-        st.experimental_rerun()  # Clear the button state
+if st.sidebar.button("My Website"):
+    open_link("https://sameehaafr.github.io/sameehaafr/")
+if st.sidebar.button("GitHub"):
+    open_link("https://github.com/sameehaafr")
+if st.sidebar.button("LinkedIn"):
+    open_link("https://www.linkedin.com/in/sameeha-afrulbasha/")
+if st.sidebar.button("Medium"):
+    open_link("https://sameehaafr.medium.com/")
 
 
 st.title('LSTM for Time Series Forecasting')
