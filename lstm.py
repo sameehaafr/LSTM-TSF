@@ -76,40 +76,40 @@ def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
-# def make_prediction(start, stop):
-#     start = int(start)
-#     stop = int(stop)
-#     model = load()
-#     merged = merge_data()
-#     merged[DATE] = pd.to_datetime(merged[DATE])
-#     #predict
-#     yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
-#     #normalize
-#     merged['daily_pm10_normalized'] = (merged[DATA_COL] - merged[DATA_COL].mean()) / merged[DATA_COL].std()
-#     yhat = (yhat - yhat.mean()) / yhat.std()
-#     yhat = np.array(yhat).flatten().tolist()
-#     actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
-#     #display as table
-#     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
-#     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
-#     return combined
-
 def make_prediction(start, stop):
+    start = int(start)
+    stop = int(stop)
     model = load()
     merged = merge_data()
-    merged[DATE] = pd.to_datetime(merged[DATE], errors='ignore')
-    # Find the nearest available dates before the chosen start and stop dates
-    start_date = merged.loc[merged[DATE].dt.date <= pd.to_datetime(start), DATE].max()
-    stop_date = merged.loc[merged[DATE].dt.date <= pd.to_datetime(stop), DATE].max()
-    # Predict
-    yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
-    # Denormalize
-    yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
-    actual = merged.loc[start_date:stop_date, DATA_COL]
-    # Display as table
-    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start_date:stop_date, DATE]})
-    combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
+    merged[DATE] = pd.to_datetime(merged[DATE])
+    #predict
+    yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
+    #normalize
+    merged['daily_pm10_normalized'] = (merged[DATA_COL] - merged[DATA_COL].mean()) / merged[DATA_COL].std()
+    yhat = (yhat - yhat.mean()) / yhat.std()
+    yhat = np.array(yhat).flatten().tolist()
+    actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
+    #display as table
+    data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
+    combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
     return combined
+
+# def make_prediction(start, stop):
+#     model = load()
+#     merged = merge_data()
+#     merged[DATE] = pd.to_datetime(merged[DATE], errors='ignore')
+#     # Find the nearest available dates before the chosen start and stop dates
+#     start_date = merged.loc[merged[DATE].dt.date <= pd.Timestamp(start), DATE].max()
+#     stop_date = merged.loc[merged[DATE].dt.date <= pd.Timestamp(stop), DATE].max()
+#     # Predict
+#     yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
+#     # Denormalize
+#     yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
+#     actual = merged.loc[start_date:stop_date, DATA_COL]
+#     # Display as table
+#     data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start_date:stop_date, DATE]})
+#     combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
+#     return combined
 
 def site_points():
     merged = merge_data()
@@ -176,32 +176,32 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
     return model
 ''')
 
-# #PREDICTION ----------------------------------------------------------------------------------------------------------------------
-# st.header('Make Predictions')
-# st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
-# start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
-# stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
-# combined = make_prediction(start,stop)
-# combined['date'] = pd.to_datetime(combined['date']).dt.date
-# combined.index = combined['date']
-# st.dataframe(combined, use_container_width=True)
-# st.line_chart(combined[['yhat', 'actual']])
-
-# PREDICTION
+#PREDICTION ----------------------------------------------------------------------------------------------------------------------
 st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
-
-merged = merge_data()
-min_date = pd.to_datetime(merged[DATE].min())
-max_date = pd.to_datetime(merged[DATE].max())
-
-start = st.date_input('Select the start date', min_value=min_date, max_value=max_date, value=min_date)
-stop = st.date_input('Select the stop date', min_value=min_date, max_value=max_date, value=min_date + datetime.timedelta(days=7))
-
-combined = make_prediction(start, stop)
-combined['Date'] = pd.to_datetime(combined['Date'], errors='ignore').dt.date
-combined.set_index('Date', inplace=True)
+start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
+stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
+combined = make_prediction(start,stop)
+combined['date'] = pd.to_datetime(combined['date']).dt.date
+combined.index = combined['date']
 st.dataframe(combined, use_container_width=True)
+st.line_chart(combined[['yhat', 'actual']])
+
+# # PREDICTION
+# st.header('Make Predictions')
+# st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
+
+# merged = merge_data()
+# min_date = pd.to_datetime(merged[DATE].min())
+# max_date = pd.to_datetime(merged[DATE].max())
+
+# start = st.date_input('Select the start date', min_value=min_date, max_value=max_date, value=min_date)
+# stop = st.date_input('Select the stop date', min_value=min_date, max_value=max_date, value=min_date + datetime.timedelta(days=7))
+
+# combined = make_prediction(start, stop)
+# combined['Date'] = pd.to_datetime(combined['Date'], errors='ignore').dt.date
+# combined.set_index('Date', inplace=True)
+# st.dataframe(combined, use_container_width=True)
 
 
 #METRICS ----------------------------------------------------------------------------------------------------------------------
