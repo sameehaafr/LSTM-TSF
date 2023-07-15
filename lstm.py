@@ -160,30 +160,30 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 ''')
 
 #PREDICTION ----------------------------------------------------------------------------------------------------------------------
-# st.header('Make Predictions')
-# st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
-# start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
-# stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
-# combined = make_prediction(start,stop)
-# combined['date'] = pd.to_datetime(combined['date']).dt.date
-# combined.index = combined['date']
-# st.dataframe(combined, use_container_width=True)
-# st.line_chart(combined[['yhat', 'actual']])
-
-#PREDICTION ----------------------------------------------------------------------------------------------------------------------
 st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
-start = st.date_input('Insert a start date for the range')
-stop = st.date_input('Insert a stop date for the range')
+start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
+stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
+combined = make_prediction(start,stop)
+combined['date'] = pd.to_datetime(combined['date']).dt.date
+combined.index = combined['date']
+st.dataframe(combined, use_container_width=True)
+st.line_chart(combined[['yhat', 'actual']])
 
-if start and stop:
-    start = start.strftime('%Y-%m-%d')
-    stop = stop.strftime('%Y-%m-%d')
-    combined = make_prediction(start, stop)
-    combined['Date'] = pd.to_datetime(combined['Date'], errors='ignore').dt.date
-    combined.set_index('Date', inplace=True)
-    st.dataframe(combined, use_container_width=True)
-    st.line_chart(combined[['Predicted', 'Actual']])
+# #PREDICTION ----------------------------------------------------------------------------------------------------------------------
+# st.header('Make Predictions')
+# st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
+# start = st.date_input('Insert a start date for the range')
+# stop = st.date_input('Insert a stop date for the range')
+
+# if start and stop:
+#     start = start.strftime('%Y-%m-%d')
+#     stop = stop.strftime('%Y-%m-%d')
+#     combined = make_prediction(start, stop)
+#     combined['Date'] = pd.to_datetime(combined['Date'], errors='ignore').dt.date
+#     combined.set_index('Date', inplace=True)
+#     st.dataframe(combined, use_container_width=True)
+#     st.line_chart(combined[['Predicted', 'Actual']])
 
 
 #METRICS ----------------------------------------------------------------------------------------------------------------------
