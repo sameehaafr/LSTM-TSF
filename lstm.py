@@ -191,7 +191,7 @@ st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 start = st.date_input('Select the start date')
 stop = st.date_input('Select the stop date')
-combined = make_prediction(pd.to_datetime(start), pd.to_datetime(stop))
+combined = make_prediction(start, stop)
 combined['Date'] = pd.to_datetime(combined['Date']).dt.date
 combined.set_index('Date', inplace=True)
 st.dataframe(combined, use_container_width=True)
