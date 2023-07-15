@@ -106,14 +106,10 @@ def site_points():
 st.sidebar.title("About Me")
 st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
 
-if st.sidebar.button('My Website'):
-    webbrowser.open_new_tab('https://sameehaafr.github.io/sameehaafr/')
-if st.sidebar.button('GitHub'):
-    webbrowser.open_new_tab('https://github.com/sameehaafr')
-if st.sidebar.button('LinkedIn'):
-    webbrowser.open_new_tab('https://www.linkedin.com/in/sameeha-afrulbasha/')
-if st.sidebar.button('Medium'):
-    webbrowser.open_new_tab('https://sameehaafr.medium.com/')
+st.sidebar.markdown('Website: https://sameehaafr.github.io/sameehaafr/')
+st.sidebar.markdown('GitHub: https://github.com/sameehaafr')
+st.sidebar.markdown('LinkedIn: https://www.linkedin.com/in/sameeha-afrulbasha/')
+st.sidebar.markdown('Medium:https://sameehaafr.medium.com/')
 
 
 st.title('LSTM for Time Series Forecasting')
