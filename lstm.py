@@ -104,7 +104,7 @@ def site_points():
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
 # Create a sidebar
 st.sidebar.title("About Me")
-image = Image.open('IMG_9670_1_2_50.png')
+image = Image.open('IMG_9670_1_6.png')
 st.sidebar.image(image)
 st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
 
