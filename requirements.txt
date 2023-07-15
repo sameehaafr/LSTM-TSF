@@ -1,6 +1,7 @@
 absl-py==1.0.0
 altair==4.2.2
 appnope==0.1.2
+asgiref==3.7.2
 astor==0.8.1
 asttokens==2.0.5
 attrs==23.1.0
@@ -16,6 +17,7 @@ cycler==0.11.0
 debugpy==1.6.7
 decorator==5.1.1
 distlib==0.3.6
+Django==4.2.3
 entrypoints==0.4
 executing==0.8.3
 fastjsonschema==2.17.1
@@ -33,6 +35,7 @@ html5lib==0.9999999
 httplib2==0.20.4
 huggingface-hub==0.4.0
 idna==3.3
+image==1.5.33
 importlib-metadata==6.6.0
 ipykernel==6.24.0
 ipython==8.1.0
@@ -95,6 +98,7 @@ seaborn==0.11.2
 six==1.16.0
 smmap==5.0.0
 spotipy==2.19.0
+sqlparse==0.4.4
 stack-data==0.2.0
 streamlit==1.22.0
 tenacity==8.2.2
