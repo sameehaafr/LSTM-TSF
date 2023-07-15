@@ -98,8 +98,8 @@ def make_prediction(start, stop):
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
     # Find the nearest available dates before the chosen start and stop dates
-    start_date = merged[DATE][merged[DATE] <= start].max()
-    stop_date = merged[DATE][merged[DATE] <= stop].max()
+    start_date = merged[DATE][merged[DATE] <= start].max().date()
+    stop_date = merged[DATE][merged[DATE] <= stop].max().date()
     # Predict
     yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
     # Denormalize
