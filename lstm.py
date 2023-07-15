@@ -97,13 +97,16 @@ def make_prediction(start, stop):
     model = load()
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
-    # predict
-    yhat = model.predict(merged.loc[start:stop, DATA_COL].values.reshape(-1, 1), verbose=0)
-    # denormalize
+    # Find the nearest available dates before the chosen start and stop dates
+    start_date = merged[DATE][merged[DATE] <= start].max()
+    stop_date = merged[DATE][merged[DATE] <= stop].max()
+    # Predict
+    yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
+    # Denormalize
     yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
-    actual = merged.loc[start:stop, DATA_COL]
-    # display as table
-    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start:stop, DATE]})
+    actual = merged.loc[start_date:stop_date, DATA_COL]
+    # Display as table
+    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start_date:stop_date, DATE]})
     combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
     return combined
 
