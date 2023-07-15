@@ -195,8 +195,8 @@ merged = merge_data()
 min_date = merged[DATE].min()
 max_date = merged[DATE].max()
 
-start = st.date_input('Select the start date', min_value=min_date, max_value=max_date)
-stop = st.date_input('Select the stop date', min_value=min_date, max_value=max_date)
+start = st.date_input('Select the start date', min_value=min_date, max_value=max_date, value=min_date)
+stop = st.date_input('Select the stop date', min_value=min_date, max_value=max_date, value=min_date + datetime.timedelta(days=7))
 
 combined = make_prediction(start, stop)
 combined['Date'] = pd.to_datetime(combined['Date'], errors='ignore').dt.date
