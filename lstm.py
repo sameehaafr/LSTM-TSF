@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 from keras.models import load_model
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential
@@ -88,8 +87,6 @@ def make_prediction(start, stop):
     yhat = (yhat - yhat.mean()) / yhat.std()
     yhat = np.array(yhat).flatten().tolist()
     actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
-
-    accuracy = accuracy_score(actual, yhat)
     #display as table
     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
@@ -200,8 +197,12 @@ st.line_chart(combined[['yhat', 'actual']])
 #METRICS ----------------------------------------------------------------------------------------------------------------------
 st.header('Metrics')
 mse = mean_squared_error(np.array(combined['actual']), np.array(combined['yhat']))
-st.text("mean squared error: " + mse.astype(str))
-st.text("Accuracy: " + str(accuracy))
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(np.array(combined['actual']), np.array(np.array(combined['yhat'])))
+st.text("Mean Squared Error (MSE): " + str(mse))
+st.text("Root Mean Squared Error (RMSE): " + str(rmse))
+st.text("Mean Absolute Error (MAE): " + str(mae))
+
 
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.header('Map of the Air Quality Monitering Stations in LA')
