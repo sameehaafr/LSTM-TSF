@@ -188,8 +188,8 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 # st.line_chart(combined[['yhat', 'actual']])
 
 # Set the time range limit
-min_date = merged_sub['DATE'].min().date()
-max_date = merged_sub['DATE'].max().date()
+min_date = merged_sub['Date'].min().date()
+max_date = merged_sub['Date'].max().date()
 
 # PREDICTION
 st.header('Make Predictions')
