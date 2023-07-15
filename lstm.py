@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn.metrics import mean_squared_error
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, f1_score
 from keras.models import load_model
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential
@@ -87,10 +88,12 @@ def make_prediction(start, stop):
     yhat = (yhat - yhat.mean()) / yhat.std()
     yhat = np.array(yhat).flatten().tolist()
     actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
+
+    accuracy = accuracy_score(np.array(actual), np.array(yhat))
     #display as table
     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
-    return combined
+    return combined, accuracy
 
 def site_points():
     merged = merge_data()
@@ -172,7 +175,7 @@ st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
 stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
-combined = make_prediction(start,stop)
+combined, accuracy = make_prediction(start,stop)
 combined['date'] = pd.to_datetime(combined['date']).dt.date
 combined.index = combined['date']
 st.dataframe(combined, use_container_width=True)
@@ -198,6 +201,7 @@ st.line_chart(combined[['yhat', 'actual']])
 st.header('Metrics')
 mse = mean_squared_error(np.array(combined['actual']), np.array(combined['yhat']))
 st.text("mean squared error: " + mse.astype(str))
+st.text("Accuracy: " + str(accuracy))
 
 #MAP ----------------------------------------------------------------------------------------------------------------------
 st.header('Map of the Air Quality Monitering Stations in LA')
