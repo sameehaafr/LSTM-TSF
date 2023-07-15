@@ -94,18 +94,16 @@ def load():
 #     return combined
 
 def make_prediction(start, stop):
-    start = start.strftime("%Y-%m-%d")
-    stop = stop.strftime("%Y-%m-%d")
     model = load()
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
     # predict
-    yhat = model.predict(merged[DATA_COL][start:stop].values.reshape(-1, 1), verbose=0)
+    yhat = model.predict(merged.loc[start:stop, DATA_COL].values.reshape(-1, 1), verbose=0)
     # denormalize
     yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
-    actual = merged[DATA_COL][start:stop]
+    actual = merged.loc[start:stop, DATA_COL]
     # display as table
-    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged[DATE][start:stop]})
+    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start:stop, DATE]})
     combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
     return combined
 
@@ -190,7 +188,7 @@ st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 start = st.date_input('Select the start date')
 stop = st.date_input('Select the stop date')
-combined = make_prediction(start, stop)
+combined = make_prediction(pd.Timestamp(start), pd.Timestamp(stop))
 combined['Date'] = pd.to_datetime(combined['Date']).dt.date
 combined.set_index('Date', inplace=True)
 st.dataframe(combined, use_container_width=True)
