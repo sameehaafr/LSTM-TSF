@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 from keras.models import load_model
 import datetime
+import webbrowser
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential
 import numpy as np
@@ -105,17 +106,14 @@ def site_points():
 st.sidebar.title("About Me")
 st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
 
-def open_link(url):
-    st.markdown(f'<a href="{url}"', unsafe_allow_html=True)
-
-if st.sidebar.button("My Website"):
-    open_link("https://sameehaafr.github.io/sameehaafr/")
-if st.sidebar.button("GitHub"):
-    open_link("https://github.com/sameehaafr")
-if st.sidebar.button("LinkedIn"):
-    open_link("https://www.linkedin.com/in/sameeha-afrulbasha/")
-if st.sidebar.button("Medium"):
-    open_link("https://sameehaafr.medium.com/")
+if st.sidebar.button('My Website'):
+    webbrowser.open_new_tab('https://sameehaafr.github.io/sameehaafr/')
+if st.sidebar.button('GitHub'):
+    webbrowser.open_new_tab('https://github.com/sameehaafr')
+if st.sidebar.button('LinkedIn'):
+    webbrowser.open_new_tab('https://www.linkedin.com/in/sameeha-afrulbasha/')
+if st.sidebar.button('Medium'):
+    webbrowser.open_new_tab('https://sameehaafr.medium.com/')
 
 
 st.title('LSTM for Time Series Forecasting')
