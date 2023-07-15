@@ -192,8 +192,8 @@ st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 
 merged = merge_data()
-min_date = merged[DATE].min().date()
-max_date = merged[DATE].max().date()
+min_date = merged[DATE].min()
+max_date = merged[DATE].max()
 
 start = st.date_input('Select the start date', min_value=min_date, max_value=max_date)
 stop = st.date_input('Select the stop date', min_value=min_date, max_value=max_date)
