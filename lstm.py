@@ -112,7 +112,7 @@ st.sidebar.markdown('LinkedIn: https://www.linkedin.com/in/sameeha-afrulbasha/')
 st.sidebar.markdown('Medium:https://sameehaafr.medium.com/')
 
 link = '[GitHub](http://github.com)'
-st.sidebar.button(link, unsafe_allow_html=True)
+st.sidebar.button(link, key='1', help='This is a help string')
 
 
 st.title('LSTM for Time Series Forecasting')
