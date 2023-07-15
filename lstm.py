@@ -90,7 +90,7 @@ def make_prediction(start, stop):
     #display as table
     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
-    return combined, accuracy
+    return combined
 
 def site_points():
     merged = merge_data()
@@ -172,7 +172,7 @@ st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
 start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
 stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
-combined, accuracy = make_prediction(start,stop)
+combined = make_prediction(start,stop)
 combined['date'] = pd.to_datetime(combined['date']).dt.date
 combined.index = combined['date']
 st.dataframe(combined, use_container_width=True)
