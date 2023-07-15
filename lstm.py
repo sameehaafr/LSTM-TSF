@@ -98,8 +98,8 @@ def make_prediction(start, stop):
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
     # Find the nearest available dates before the chosen start and stop dates
-    start_date = merged[DATE][merged[DATE] <= pd.Timestamp(start)].max().date()
-    stop_date = merged[DATE][merged[DATE] <= pd.Timestamp(stop)].max().date()
+    start_date = merged[DATE][merged[DATE] <= start].max()
+    stop_date = merged[DATE][merged[DATE] <= stop].max()
     # Predict
     yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
     # Denormalize
@@ -185,6 +185,7 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 # combined.index = combined['date']
 # st.dataframe(combined, use_container_width=True)
 # st.line_chart(combined[['yhat', 'actual']])
+
 
 # PREDICTION
 st.header('Make Predictions')
