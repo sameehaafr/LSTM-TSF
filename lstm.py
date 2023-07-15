@@ -89,7 +89,7 @@ def make_prediction(start, stop):
     yhat = np.array(yhat).flatten().tolist()
     actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
 
-    accuracy = accuracy_score(np.array(actual), np.array(yhat))
+    accuracy = accuracy_score(actual, yhat)
     #display as table
     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
