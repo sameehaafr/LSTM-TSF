@@ -111,6 +111,9 @@ st.sidebar.markdown('GitHub: https://github.com/sameehaafr')
 st.sidebar.markdown('LinkedIn: https://www.linkedin.com/in/sameeha-afrulbasha/')
 st.sidebar.markdown('Medium:https://sameehaafr.medium.com/')
 
+link = '[GitHub](http://github.com)'
+st.sidebar.button(link, unsafe_allow_html=True)
+
 
 st.title('LSTM for Time Series Forecasting')
 st.markdown("In this article, we will be using a Long Short-Term Memory (LSTM) model to forecast air quality in Los Angeles, California. We will be using the Keras library to build our LSTM model.")
