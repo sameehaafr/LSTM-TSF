@@ -99,15 +99,15 @@ def make_prediction(start, stop):
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE], errors='ignore')
     # Find the nearest available dates before the chosen start and stop dates
-    start_date = merged.loc[merged[DATE].dt.date <= pd.Timestamp(start).date(), DATE].max()
-    stop_date = merged.loc[merged[DATE].dt.date <= pd.Timestamp(stop).date(), DATE].max()
+    start_date = merged.loc[merged[DATE].dt.date <= start, DATE].max().date()
+    stop_date = merged.loc[merged[DATE].dt.date <= stop, DATE].max().date()
     # Predict
-    yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
+    yhat = model.predict(merged.loc[merged[DATE] >= start_date, DATA_COL].values.reshape(-1, 1), verbose=0)
     # Denormalize
     yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
-    actual = merged.loc[start_date:stop_date, DATA_COL]
+    actual = merged.loc[merged[DATE] >= start_date, DATA_COL]
     # Display as table
-    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start_date:stop_date, DATE]})
+    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[merged[DATE] >= start_date, DATE]})
     combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
     return combined
 
