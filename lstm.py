@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn.metrics import mean_squared_error
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, f1_score
+from sklearn.metrics import accuracy_score
 from keras.models import load_model
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential
