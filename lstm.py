@@ -192,7 +192,7 @@ st.markdown('The input range represents the range of dates you want to make pred
 start = st.date_input('Select the start date')
 stop = st.date_input('Select the stop date')
 combined = make_prediction(start, stop)
-combined['Date'] = pd.to_datetime(combined['Date']).dt.date
+combined['Date'] = pd.to_datetime(combined['Date']).dt.index
 combined.set_index('Date', inplace=True)
 st.dataframe(combined, use_container_width=True)
 
