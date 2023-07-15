@@ -76,35 +76,22 @@ def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
-# def make_prediction(start, stop):
-#     start = int(start)
-#     stop = int(stop)
-#     model = load()
-#     merged = merge_data()
-#     merged[DATE] = pd.to_datetime(merged[DATE])
-#     #predict
-#     yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
-#     #normalize
-#     merged['daily_pm10_normalized'] = (merged[DATA_COL] - merged[DATA_COL].mean()) / merged[DATA_COL].std()
-#     yhat = (yhat - yhat.mean()) / yhat.std()
-#     yhat = np.array(yhat).flatten().tolist()
-#     actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
-#     #display as table
-#     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
-#     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
-#     return combined
-
 def make_prediction(start, stop):
+    start = int(start)
+    stop = int(stop)
     model = load()
     merged = merge_data()
-    merged[DATE] = pd.to_datetime(merged[DATE], errors='ignore')
-    start_date = merged.loc[merged[DATE].dt.date <= pd.Timestamp(start), DATE].max()
-    stop_date = merged.loc[merged[DATE].dt.date <= pd.Timestamp(stop), DATE].max()
-    yhat = model.predict(merged.loc[start_date:stop_date, DATA_COL].values.reshape(-1, 1), verbose=0)
-    yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
-    actual = merged.loc[start_date:stop_date, DATA_COL]
-    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged.loc[start_date:stop_date, DATE]})
-    combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
+    merged[DATE] = pd.to_datetime(merged[DATE])
+    #predict
+    yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
+    #normalize
+    merged['daily_pm10_normalized'] = (merged[DATA_COL] - merged[DATA_COL].mean()) / merged[DATA_COL].std()
+    yhat = (yhat - yhat.mean()) / yhat.std()
+    yhat = np.array(yhat).flatten().tolist()
+    actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
+    #display as table
+    data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
+    combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
     return combined
 
 def site_points():
