@@ -106,7 +106,7 @@ st.sidebar.title("About Me")
 st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
 
 def open_link(url):
-    st.markdown(f'<a href="{url}" target="_blank">Open Link</a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{url}"', unsafe_allow_html=True)
 
 if st.sidebar.button("My Website"):
     open_link("https://sameehaafr.github.io/sameehaafr/")
