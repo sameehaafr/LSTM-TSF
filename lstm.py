@@ -75,22 +75,38 @@ def load():
     model = tf.keras.models.load_model('models/lstm_model_10.h5')
     return model
 
+# def make_prediction(start, stop):
+#     start = int(start)
+#     stop = int(stop)
+#     model = load()
+#     merged = merge_data()
+#     merged[DATE] = pd.to_datetime(merged[DATE])
+#     #predict
+#     yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
+#     #normalize
+#     merged['daily_pm10_normalized'] = (merged[DATA_COL] - merged[DATA_COL].mean()) / merged[DATA_COL].std()
+#     yhat = (yhat - yhat.mean()) / yhat.std()
+#     yhat = np.array(yhat).flatten().tolist()
+#     actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
+#     #display as table
+#     data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
+#     combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
+#     return combined
+
 def make_prediction(start, stop):
     start = int(start)
     stop = int(stop)
     model = load()
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
-    #predict
-    yhat = model.predict(merged[DATA_COL][start:stop], verbose=0)
-    #normalize
-    merged['daily_pm10_normalized'] = (merged[DATA_COL] - merged[DATA_COL].mean()) / merged[DATA_COL].std()
-    yhat = (yhat - yhat.mean()) / yhat.std()
-    yhat = np.array(yhat).flatten().tolist()
-    actual = (merged['daily_pm10_normalized'][start:stop]).to_list()
-    #display as table
-    data = pd.DataFrame({'yhat': yhat, 'actual': actual, 'diff': np.abs(np.array(yhat) - np.array(actual)), 'date': merged[DATE][start:stop]})
-    combined = pd.DataFrame(data, columns=['yhat', 'actual', 'diff', 'date'])
+    # predict
+    yhat = model.predict(merged[DATA_COL][start:stop].values.reshape(-1, 1), verbose=0)
+    # denormalize
+    yhat = yhat * merged[DATA_COL].std() + merged[DATA_COL].mean()
+    actual = merged[DATA_COL][start:stop]
+    # display as table
+    data = pd.DataFrame({'Predicted': yhat.flatten(), 'Actual': actual, 'Difference': np.abs(yhat.flatten() - actual), 'Date': merged[DATE][start:stop]})
+    combined = pd.DataFrame(data, columns=['Predicted', 'Actual', 'Difference', 'Date'])
     return combined
 
 def site_points():
@@ -100,16 +116,16 @@ def site_points():
     return st.map(coords[['LAT', 'LON']])
 
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
-st.markdown('# LSTM for Time Series Forecasting')
+st.title('LSTM for Time Series Forecasting')
 st.markdown("In this article, we will be using a Long Short-Term Memory (LSTM) model to forecast air quality in Los Angeles, California. We will be using the Keras library to build our LSTM model.")
 st.markdown("<b>Category:</b> Time Series Forecasting and LSTM", unsafe_allow_html=True)
 st.markdown('<b>Objective:</b> of this project is to build an LSTM model that can forecast PM10 values in LA, California over X amount of time. The data used for this project was obtained from the EPA website.', unsafe_allow_html=True)
 st.markdown('This project was worked on during the 2022-23 school year as a part of the club ML@P (Machine Learning at Purdue). Check us out here: https://ml-purdue.github.io/', unsafe_allow_html=True)
-st.markdown('The code for this project can be found in this [Github Repo](https://github.com/sameehaafr/LSTM-TSF/tree/master)', unsafe_allow_html=True)
+st.markdown('The code for this project can be found in this [Github Repo](https://github.com/sameehaafr/LSTM-TSF/tree/master).', unsafe_allow_html=True)
 
 
 #DATA ----------------------------------------------------------------------------------------------------------------------
-st.markdown('## Data')
+st.header('Data')
 st.markdown('''To download the exact data I used:
 1. Head to https://www.epa.gov/outdoor-air-quality-data
 2. Click on "Download Daily Data"
@@ -134,7 +150,7 @@ with col2:
    st.dataframe(merged_sub, use_container_width=True)
 
 #MODEL ----------------------------------------------------------------------------------------------------------------------
-st.markdown('## LSTM Model')
+st.header('LSTM Model')
 st.markdown('We chose LSTM as our primary time series forecasting model for various reasons. Air pollution data often involves non-linear relationships and intricate patterns that may be difficult for linear models to capture. An LSTM is more flexible with this kind of task as it is designed to capture long term dependences in time series data and retain information from previous time steps. ')
 st.markdown('We used the Keras library to build our LSTM model. We used a single LSTM layer with 50 units, a dropout rate of 0.2, and a regularization rate of 0.02. We used the Adam optimizer and mean squared error as our loss function. We trained our model for 25 epochs.')
 st.markdown('''After multiple trials of training, we saw that our model's main problem was it was overfitting the data (trends were too accurate). To prevent overfiting we did the following: 
@@ -158,16 +174,26 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
     return model
 ''')
 
-#PREDICTION ----------------------------------------------------------------------------------------------------------------------
-st.markdown('## Make Predictions')
+# #PREDICTION ----------------------------------------------------------------------------------------------------------------------
+# st.header('Make Predictions')
+# st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
+# start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
+# stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
+# combined = make_prediction(start,stop)
+# combined['date'] = pd.to_datetime(combined['date']).dt.date
+# combined.index = combined['date']
+# st.dataframe(combined, use_container_width=True)
+# st.line_chart(combined[['yhat', 'actual']])
+
+# PREDICTION
+st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
-start = st.number_input('Insert a start value for the range', format='%i', min_value=0, value=0)
-stop = st.number_input('Insert a stop value for the range', format='%i', min_value=1, value=8)
-combined = make_prediction(start,stop)
-combined['date'] = pd.to_datetime(combined['date']).dt.date
-combined.index = combined['date']
+start = st.date_input('Select the start date')
+stop = st.date_input('Select the stop date')
+combined = make_prediction(start, stop)
+combined['Date'] = pd.to_datetime(combined['Date']).dt.date
+combined.set_index('Date', inplace=True)
 st.dataframe(combined, use_container_width=True)
-st.line_chart(combined[['yhat', 'actual']])
 
 #METRICS ----------------------------------------------------------------------------------------------------------------------
 st.header('Metrics')
@@ -175,5 +201,5 @@ mse = mean_squared_error(np.array(combined['actual']), np.array(combined['yhat']
 st.text("mean squared error: " + mse.astype(str))
 
 #MAP ----------------------------------------------------------------------------------------------------------------------
-st.markdown('## Map of the Air Quality Monitering Stations in LA')
+st.header('Map of the Air Quality Monitering Stations in LA')
 site_points()
