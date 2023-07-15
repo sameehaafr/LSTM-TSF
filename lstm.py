@@ -94,8 +94,8 @@ def load():
 #     return combined
 
 def make_prediction(start, stop):
-    start = int(start)
-    stop = int(stop)
+    start = start.strftime("%Y-%m-%d")
+    stop = stop.strftime("%Y-%m-%d")
     model = load()
     merged = merge_data()
     merged[DATE] = pd.to_datetime(merged[DATE])
