@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 from keras.models import load_model
-import datetime
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential
 import numpy as np
@@ -11,8 +10,6 @@ from numpy import array
 import time
 from tensorflow.python.keras import regularizers
 import matplotlib.pyplot as plt
-from PIL import Image
-
 
 DATA_URLS = ["data/LA_pm10_2020.csv", "data/LA_pm10_2021.csv", "data/LA_pm10_2022.csv"]
 DATE = "Date"
@@ -104,8 +101,6 @@ def site_points():
 #DISPLAY ----------------------------------------------------------------------------------------------------------------------
 # Create a sidebar
 st.sidebar.title("About Me")
-# image = Image.open('IMG_9670_1_6.png')
-# st.sidebar.image(image)
 st.sidebar.write("I'm Sameeha Afrulbasha! I'm an undergraduate student studying Data Science, Statistics, and Math at Purdue University. Feel free to checkout my website and other media accounts below!")
 
 st.sidebar.markdown('Website: \n\n\n https://sameehaafr.github.io/sameehaafr/')
