@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 from keras.models import load_model
+import datetime
 from keras.layers import LSTM, Dense, Dropout
 from keras.models import Sequential
 import numpy as np
@@ -186,11 +187,25 @@ def create_lstm(nsteps, nfeatures, units, activation, dropout):
 # st.dataframe(combined, use_container_width=True)
 # st.line_chart(combined[['yhat', 'actual']])
 
+# Set the time range limit
+min_date = merged_sub['DATE'].min().date()
+max_date = merged_sub['DATE'].max().date()
+
 # PREDICTION
 st.header('Make Predictions')
 st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
-start = st.date_input('Select the start date')
-stop = st.date_input('Select the stop date')
+
+# Start date input
+start = st.date_input('Select the start date', min_value=min_date, max_value=max_date)
+
+# Stop date input
+stop = st.date_input('Select the stop date', min_value=start, max_value=max_date)
+
+# PREDICTION
+st.header('Make Predictions')
+st.markdown('The input range represents the range of dates you want to make predictions for. The model will use the data from the previous 10 days to make predictions for the next day.')
+# start = st.date_input('Select the start date')
+# stop = st.date_input('Select the stop date')
 combined = make_prediction(start, stop)
 combined['Date'] = pd.to_datetime(combined['Date'], errors='ignore').dt.date
 combined.set_index('Date', inplace=True)
